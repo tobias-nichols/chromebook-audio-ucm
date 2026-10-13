@@ -1,0 +1,7 @@
+lint:
+    image: alpine:latest
+    before_script:
+        - apk add --no-cache alsa-lib-dev git make python3
+    script:
+        - git clone --depth 1 https://github.com/alsa-project/alsa-tests
+        - make -C alsa-tests/python/ucm-validator2 ALSA_UCM_DIR="$PWD/ucm2"
