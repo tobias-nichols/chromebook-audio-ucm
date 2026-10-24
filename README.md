@@ -38,7 +38,7 @@ Limits:
 
 ## Requirements
 
-- alsa-lib 1.2.14 or newer, and alsa-ucm-conf.
+- alsa-lib and alsa-ucm-conf 1.2.14 or newer.
 - A kernel with the card's driver. Skylake to Apollo Lake use the AVS driver
   with linux-firmware's `intel/avs` topologies; SOF cards need sof-firmware.
 
@@ -88,7 +88,8 @@ Each profile keeps ChromiumOS's devices, mixer settings, jacks and PCMs, under
 the names mainline Linux uses: AVS's current card names, Skylake's cards split
 into AVS's card per codec, and the controls and jacks ChromiumOS's kernels name
 differently. Anything mainline lacks is dropped, so every control, jack and PCM
-a profile uses exists.
+a profile uses exists. Microphones that use some of a PCM's channels are split
+with alsa-ucm-conf's SplitPCM macros, which PipeWire reads to split them itself.
 
 ### How machines are matched
 
@@ -96,7 +97,8 @@ Each card's `conf.d/<driver>/<driver>.conf` reads the firmware name, from
 Google's firmware version or MrChromebox's DMI product name, and the SKU, from
 DMI or the device tree, then loads the profile ChromiumOS would. A SKU
 ChromiumOS doesn't list gets a profile from the same firmware; any other machine
-gets none.
+gets none. Models whose profiles are the same share one file, which names each
+of ChromiumOS's sources for it.
 
 ## Contributing
 
